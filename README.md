@@ -10,3 +10,15 @@
    - Session (id, name, classId, teacherId, startTime, endTime, date)
    - Student (id, name, phone, email, notes)
    - Fee (classId, studentId, classFee, discount, paidAmount)
+
+#####
+- Tasks
+   - Datist
+      - [ ] CRUD Course
+      - [ ] CRUD Student
+      - [ ] CRUD Session (maybe later)
+   - Shawn
+      - [X] Setup Project
+      - [ ] CRUD Teacher
+      - [ ] CRUD Class
+      - [ ] CRUD Fee
