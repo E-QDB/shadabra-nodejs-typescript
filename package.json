@@ -4,10 +4,13 @@
   "description": "The very first project in shada series for learning new tech",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "postinstall": "tsc",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "build": "rimraf dist && tsc",
+    "preserve": "npm run build",
+    "serve": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon -q dist/js/index.js\"",
+    "prestart": "npm run build",
+    "start": "cross-env NODE_ENV=production node dist/js/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Shawn & Datist",
   "license": "MIT",
@@ -21,6 +24,7 @@
     "config": "^3.3.6",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^9.0.2",
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
@@ -33,6 +37,7 @@
     "mongoose": "^5.12.8",
     "morgan": "^1.10.0",
     "normalize-mongoose": "0.0.1",
+    "rimraf": "^3.0.2",
     "swagger-jsdoc": "^7.0.0-rc.6",
     "swagger-ui-express": "^4.1.6",
     "uuid": "^8.3.2",
