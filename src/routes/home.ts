@@ -7,5 +7,5 @@ homeRouter.get('/', (req: Request, res: Response) => {
 })
 
 homeRouter.get('/test', (req: Request, res: Response) => {
-   res.send('Test!');
+   res.send('Test');
 })
