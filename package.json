@@ -4,7 +4,7 @@
   "description": "The very first project in shada series for learning new tech",
   "main": "index.js",
   "scripts": {
-    "build": "nodemon src/index.ts",
+    "build": "tsc src/index.ts",
     "start": "nodemon src/index.ts",
     "dev": "nodemon src/index.ts"
   },
