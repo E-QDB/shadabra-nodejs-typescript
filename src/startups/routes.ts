@@ -1,9 +1,9 @@
-import express, {Express} from 'express'
+import express, {Express, Request, Response, NextFunction} from 'express'
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
-import {homeRouter} from '../routes';
+import {homeRouter, teacherRouter} from '../routes';
 import {error} from '../middlewares';
 
 export const routes = (app: Express) => {
@@ -14,7 +14,7 @@ export const routes = (app: Express) => {
    app.use(morgan('tiny'));
    app.use(cookieParser());
 
-   app.use((req, res, next) => {
+   app.use((req: Request, res: Response, next: NextFunction) => {
       res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Methods', '*');
       res.header(
@@ -25,6 +25,8 @@ export const routes = (app: Express) => {
     });
 
     app.use('/', homeRouter);
+    app.use('/api/teachers', teacherRouter);
 
     app.use(error);
 }
+
