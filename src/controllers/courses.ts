@@ -8,7 +8,7 @@ import {
   IClass,
   classSchema,
 } from "../models";
-import { SuccessResponse, BadRequest } from "../helpers";
+import { SuccessResponse, BadRequest, NotFound } from "../helpers";
 import { PAGINATION, SORTING } from "../constants";
 
 const Course = mongoose.model<ICourse>("course", courseSchema, "course");
@@ -76,36 +76,45 @@ export const getCourses = async (req: Request, res: Response) => {
   }
 };
 
+export const getCourseById = async (req: Request, res: Response) => {
+  try {
+    let course = await Course.findById(req.params.id)
+    return course ? SuccessResponse(res, course) : NotFound(res, "Course not found")
+  } catch (error) {
+    logger.error(error);
+    return BadRequest(res, error);
+  }
+
+}
+
 export const updateCourse = async (req: Request, res: Response) => {
   try {
-    let courseId = req.params.courseId;
+    let courseId = req.params.id;
     if (!req.body) {
-      return BadRequest(res, "Data to update can not be empty!");
+      return BadRequest(res, "Data to update can not be empty");
     }
     if (!req.body.name) {
-      return BadRequest(res, "Course name is required!");
+      return BadRequest(res, "Course name is required");
     }
-    Course.findByIdAndUpdate(courseId, req.body, {
+    let course = Course.findByIdAndUpdate(courseId, req.body, {
       useFindAndModify: false,
-    }).then((data) => {
-      if (!data) {
-        return BadRequest(
-          res,
-          `Cannot update Course with id=${courseId}. Maybe Course was not found!`
-        );
-      } else return SuccessResponse(res, null, 204);
-    });
+    })
+    return course ? SuccessResponse(res, null, 204) : NotFound(res, "Course not found")
   } catch (error) {
     logger.error(error);
     return BadRequest(res, error);
   }
 };
 
-export const deleteCourse = (req: Request, res: Response) => {
+export const deleteCourse = async (req: Request, res: Response) => {
   try {
-    let courseId = req.body.courseId;
-    Course.findByIdAndRemove(courseId);
-    return SuccessResponse(res, null, 204);
+    const course = await Course.findById(req.params.id);
+    if(!course) {
+      return NotFound(res, "Course not found")
+    } else {
+      await course.delete();
+      return SuccessResponse(res, null, 204);
+    }
   } catch (error) {
     logger.error(error);
     return BadRequest(res, error);
