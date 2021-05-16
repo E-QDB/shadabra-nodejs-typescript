@@ -3,7 +3,7 @@ import { IClass } from './class';
 const normalize = require('normalize-mongoose');
 
 export const courseSchema: Schema = new Schema({
-   name: String,
+   name: {type: String, require: true},
    description: String,
    tech: String,
    image: {
@@ -23,6 +23,13 @@ export interface ICourse extends Document {
    tech: string,
    image: string,
    classes: [IClass]
+}
+
+export interface AddCourseRequest {
+   name: string,
+   description: string,
+   tech: string,
+   image: string,
 }
 
 courseSchema.plugin(normalize);
