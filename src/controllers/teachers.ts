@@ -2,11 +2,21 @@ import {Request, Response} from 'express';
 import mongoose from 'mongoose';
 import {logger} from '../helpers';
 import {AddTeacherRequest, ITeacher, teacherSchema, IClass, classSchema} from '../models';
-import {SuccessResponse, BadRequest} from '../helpers';
+import {SuccessResponse, BadRequest, NotFound} from '../helpers';
 import {PAGINATION, SORTING} from '../constants';
 
 const Teacher = mongoose.model<ITeacher>('teacher', teacherSchema, 'teacher');
 const Class = mongoose.model<IClass>('class', classSchema, 'class');
+
+export const getTeacherById = async (req: Request, res: Response) => {
+  try {
+    let teacher = await Teacher.findById(req.params.id).populate('classes', 'id name courseId');
+    return !teacher ? NotFound(res, 'Teacher Not Found') : SuccessResponse(res, teacher);
+  } catch (error) {
+    logger.error(error);
+    return BadRequest(res, error);
+  }
+}
 
 export const getTeachers = async (req: Request, res: Response) => {
    try {
@@ -62,7 +72,7 @@ export const addTeacher = async (req: Request, res: Response) => {
     const {classIds, ...teacherInfo} = req.body as AddTeacherRequest;
     const teacher = new Teacher(teacherInfo);
     const result = await teacher.save();
-    classIds?.length > 0 && classIds.forEach(async (classId) => {
+    classIds && classIds?.length > 0 && classIds.forEach(async (classId) => {
       await Class.findByIdAndUpdate(
         classId,
         { $push: { teachers: result.id } },
@@ -75,6 +85,46 @@ export const addTeacher = async (req: Request, res: Response) => {
       );
     });
     return SuccessResponse(res, result, 201);
+  } catch (error) {
+    logger.error(error);
+    return BadRequest(res, error);
+  }
+}
+
+export const updateTeacher = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const {classIds, ...teacherInfo} = req.body as AddTeacherRequest;
+    const updateBody = classIds ? {...teacherInfo, classes: []} : teacherInfo;
+    const result = await Teacher.findByIdAndUpdate(req.params.id, updateBody);
+    classIds && classIds?.length > 0 && classIds.forEach(async (classId) => {
+      await Class.findByIdAndUpdate(
+        classId,
+        { $push: { teachers: id } },
+        { new: true, useFindAndModify: true}
+      );
+      await Teacher.findByIdAndUpdate(
+        id,
+        { $push: { classes: classId } },
+        { new: true, useFindAndModify: true }
+      );
+    });
+    return SuccessResponse(res, result);
+  } catch (error) {
+    logger.error(error);
+    return BadRequest(res, error);
+  }
+}
+
+export const deleteTeacher = async (req: Request, res: Response) => {
+  try {
+    const teacher = await Teacher.findById(req.params.id).populate('classes', 'id name courseId');
+    if(!teacher) {
+      return NotFound(res, 'Teacher Not Found')
+    } else {
+      await teacher.delete();
+      return SuccessResponse(res, null, 204);
+    } 
   } catch (error) {
     logger.error(error);
     return BadRequest(res, error);
