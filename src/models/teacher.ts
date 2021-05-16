@@ -31,4 +31,14 @@ export interface ITeacher extends Document {
    classes: [IClass]
 }
 
+export interface AddTeacherRequest {
+   name: string,
+   phone: string,
+   email: string,
+   bio: string,
+   isAdmin: boolean,
+   avatar: string,
+   classIds: [string]
+}
+
 teacherSchema.plugin(normalize);
