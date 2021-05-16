@@ -20,7 +20,7 @@ const response = (httpStatusCode: number, errorMessage: string | null, errorCode
       .json(response(httpStatus.BAD_REQUEST, serverError, errorCode, data));
   };
   
-  export const NoContent = (res: Response, serverError = '', errorCode = 1, data = null) => {
+  export const NoContent = (res: Response, data: any, serverError = '', errorCode = 1) => {
     res
       .status(httpStatus.NO_CONTENT)
       .json(response(httpStatus.NO_CONTENT, serverError, errorCode, data));
