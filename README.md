@@ -14,11 +14,11 @@
 #####
 - Tasks
    - Datist
-      - [ ] CRUD Course
-      - [ ] CRUD Student
+      - [X] CRUD Course
+      - [ ] CRUD Student (by 23rd May 2021)
       - [ ] CRUD Session (maybe later)
    - Shawn
       - [X] Setup Project
-      - [ ] CRUD Teacher
-      - [ ] CRUD Class
+      - [X] CRUD Teacher
+      - [ ] CRUD Class (by 23rd May 2021)
       - [ ] CRUD Fee
