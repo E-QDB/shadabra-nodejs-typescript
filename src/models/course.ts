@@ -10,11 +10,6 @@ export const courseSchema: Schema = new Schema({
       type: String,
       default: 'https://via.placeholder.com/1200x500?text=Course+Image'
    },
-   classes: [{
-      type: Object,
-      ref: 'class',
-      select: false
-   }]
 });
 
 export interface ICourse extends Document {
@@ -22,7 +17,6 @@ export interface ICourse extends Document {
    description: string,
    tech: string,
    image: string,
-   classes: [IClass]
 }
 
 export interface AddCourseRequest {

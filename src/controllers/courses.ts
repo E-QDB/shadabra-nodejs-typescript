@@ -16,11 +16,11 @@ const Class = mongoose.model<IClass>("class", classSchema, "class");
 
 export const addCourse = async (req: Request, res: Response) => {
   try {
-    const course = new Course(req.body as AddCourseRequest);
+    const courseInfo = new Course(req.body as AddCourseRequest);
     if (!req.body.name) {
       return BadRequest(res, "Course name is required!");
     }
-    const result = await course.save();
+    const result = await courseInfo.save();
     return SuccessResponse(res, result, 201);
   } catch (error) {
     logger.error(error);
@@ -58,7 +58,6 @@ export const getCourses = async (req: Request, res: Response) => {
     };
     const isGetAll = !(pageSize && pageIndex);
     const courses = await Course.find(filter)
-      .populate("classes", "id name courseId")
       .select(isGetAll ? "id name" : "")
       .sort(`${orderByDirection === "asc" ? "" : "-"}${orderByColumn}`)
       .skip(isGetAll ? 0 : (index - 1) * size)
@@ -94,12 +93,12 @@ export const updateCourse = async (req: Request, res: Response) => {
       return BadRequest(res, "Data to update can not be empty");
     }
     if (!req.body.name) {
-      return BadRequest(res, "Course name is required");
+      return BadRequest(res, "Class name is required");
     }
-    let course = Course.findByIdAndUpdate(courseId, req.body, {
+    let courses = Course.findByIdAndUpdate(courseId, req.body, {
       useFindAndModify: false,
     })
-    return course ? SuccessResponse(res, null, 204) : NotFound(res, "Course not found")
+    return courses ? SuccessResponse(res, null, 204) : NotFound(res, "Course not found")
   } catch (error) {
     logger.error(error);
     return BadRequest(res, error);
