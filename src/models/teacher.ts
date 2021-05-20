@@ -18,7 +18,11 @@ export const teacherSchema: Schema = new Schema({
    classes: [{
       type: Object,
       ref: 'class',
-   }]
+   }],
+   sessions: {
+      type: Object,
+      ref: 'session'
+   }
 });
 
 export interface ITeacher extends Document {
