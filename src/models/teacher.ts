@@ -42,7 +42,7 @@ export interface AddTeacherRequest {
    bio: string,
    isAdmin: boolean,
    avatar: string,
-   classIds: [string]
+   classes: [string]
 }
 
 teacherSchema.plugin(normalize);
