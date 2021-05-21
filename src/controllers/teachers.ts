@@ -69,15 +69,17 @@ export const getTeachers = async (req: Request, res: Response) => {
 
 export const addTeacher = async (req: Request, res: Response) => {
   try {
-    const {classIds, ...teacherInfo} = req.body as AddTeacherRequest;
+    const {classes, ...teacherInfo} = req.body as AddTeacherRequest;
     const teacher = new Teacher(teacherInfo);
     const result = await teacher.save();
-    classIds && classIds?.length > 0 && classIds.forEach(async (classId) => {
+
+    classes && classes?.length > 0 && classes.forEach(async (classId) => {
       await Class.findByIdAndUpdate(
         classId,
         { $push: { teachers: result.id } },
         { new: true, useFindAndModify: false}
       );
+
       await Teacher.findByIdAndUpdate(
         result.id,
         { $push: { classes: classId } },
@@ -94,10 +96,10 @@ export const addTeacher = async (req: Request, res: Response) => {
 export const updateTeacher = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const {classIds, ...teacherInfo} = req.body as AddTeacherRequest;
-    const updateBody = classIds ? {...teacherInfo, classes: []} : teacherInfo;
+    const {classes, ...teacherInfo} = req.body as AddTeacherRequest;
+    const updateBody = classes ? {...teacherInfo, classes: []} : teacherInfo;
     const result = await Teacher.findByIdAndUpdate(req.params.id, updateBody);
-    classIds && classIds?.length > 0 && classIds.forEach(async (classId) => {
+    classes && classes?.length > 0 && classes.forEach(async (classId) => {
       await Class.findByIdAndUpdate(
         classId,
         { $push: { teachers: id } },

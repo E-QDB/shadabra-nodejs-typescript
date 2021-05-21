@@ -18,7 +18,11 @@ export const teacherSchema: Schema = new Schema({
    classes: [{
       type: Object,
       ref: 'class',
-   }]
+   }],
+   sessions: {
+      type: Object,
+      ref: 'session'
+   }
 });
 
 export interface ITeacher extends Document {
@@ -38,7 +42,7 @@ export interface AddTeacherRequest {
    bio: string,
    isAdmin: boolean,
    avatar: string,
-   classIds: [string]
+   classes: [string]
 }
 
 teacherSchema.plugin(normalize);
