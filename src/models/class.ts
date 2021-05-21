@@ -5,13 +5,17 @@ export const classSchema: Schema = new Schema({
    name: {type: String, require: true},
    description: String,
    fee: Number,
-   courseId: {
+   course: {
       type: SchemaTypes.ObjectId,
       ref: 'course'
    },
-   teacherId: {
+   teacher: {
       type: SchemaTypes.ObjectId,
       ref: 'teacher'
+   },
+   sessions: {
+      type: Object,
+      ref: 'session'
    }
 });
 
@@ -19,8 +23,8 @@ export interface IClass extends Document {
    name: string,
    description: string,
    fee: number,
-   courseId: string,
-   teacherId: string
+   course: string,
+   teacher: string
 }
 
 export interface AddClassRequest {

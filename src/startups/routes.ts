@@ -3,7 +3,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
-import {homeRouter, teacherRouter, courseRouter, studentRouter, classRouter} from '../routes';
+import {homeRouter, teacherRouter, courseRouter, studentRouter, classRouter, sessionRouter} from '../routes';
 import {error} from '../middlewares';
 
 export const routes = (app: Express) => {
@@ -29,6 +29,7 @@ export const routes = (app: Express) => {
     app.use('/api/courses', courseRouter);
     app.use('/api/students', studentRouter);
     app.use('/api/classes', classRouter);
+    app.use('/api/sessions', sessionRouter);
 
     app.use(error);
 }

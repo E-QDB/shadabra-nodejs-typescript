@@ -48,7 +48,7 @@ export const getClasses = async (req: Request, res: Response) => {
     };
     const isGetAll = !(pageSize && pageIndex);
     const classes = await Class.find(filter)
-      .populate("classes", "id name courseId")
+      .populate("course", "id name")
       .select(isGetAll ? "id name" : "")
       .sort(`${orderByDirection === "asc" ? "" : "-"}${orderByColumn}`)
       .skip(isGetAll ? 0 : (index - 1) * size)
