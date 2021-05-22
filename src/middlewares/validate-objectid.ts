@@ -4,7 +4,7 @@ import {ErrorCode} from '../constants';
 import { BadRequest } from '../helpers';
 
 export const validateObjectID = (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id || req.params.diseaseId;
+  const id: string = req.params.id || req.params.diseaseId;
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return BadRequest(res, 'Invalid ObjectId', ErrorCode.INVALID_OBJECTID);
   }
