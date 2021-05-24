@@ -1,7 +1,15 @@
 import httpStatus from 'http-status';
 import { Response } from 'express';
+import { ErrorCode } from '../constants';
 
-const response = (httpStatusCode: number, errorMessage: string | null, errorCode: number | null, data: any) => {
+interface IResponse {
+  httpStatusCode: number;
+  errorMessage: string | null;
+  errorCode: ErrorCode | null;
+  data: any;
+}
+
+const response = (httpStatusCode: number, errorMessage: string | null, errorCode: ErrorCode | null, data: any) : IResponse => {
   return {
     httpStatusCode,
     errorMessage,
@@ -14,37 +22,37 @@ const response = (httpStatusCode: number, errorMessage: string | null, errorCode
     res.status(statusCode).json(response(statusCode, null, null, data));
   };
   
-  export const BadRequest = (res: Response, serverError = '', errorCode = 1, data = null) => {
+  export const BadRequest = (res: Response, serverError = '', errorCode = ErrorCode.SUCCESS, data = null) => {
     res
       .status(httpStatus.BAD_REQUEST)
       .json(response(httpStatus.BAD_REQUEST, serverError, errorCode, data));
   };
   
-  export const NoContent = (res: Response, data: any, serverError = '', errorCode = 1) => {
+  export const NoContent = (res: Response, data: any, serverError = '', errorCode = ErrorCode.SUCCESS) => {
     res
       .status(httpStatus.NO_CONTENT)
       .json(response(httpStatus.NO_CONTENT, serverError, errorCode, data));
   };
   
-  export const Unauthorized = (res: Response, serverError = '', errorCode = 1, data = null) => {
+  export const Unauthorized = (res: Response, serverError = '', errorCode = ErrorCode.SUCCESS, data = null) => {
     res
       .status(httpStatus.UNAUTHORIZED)
       .json(response(httpStatus.UNAUTHORIZED, serverError, errorCode, data));
   };
   
-  export const Forbidden = (res: Response, serverError = '', errorCode = 1, data = null) => {
+  export const Forbidden = (res: Response, serverError = '', errorCode = ErrorCode.SUCCESS, data = null) => {
     res
       .status(httpStatus.FORBIDDEN)
       .json(response(httpStatus.FORBIDDEN, serverError, errorCode, data));
   };
   
-  export const NotFound = (res: Response, serverError = '', errorCode = 1, data = null) => {
+  export const NotFound = (res: Response, serverError = '', errorCode = ErrorCode.SUCCESS, data = null) => {
     res
       .status(httpStatus.NOT_FOUND)
       .json(response(httpStatus.NOT_FOUND, serverError, errorCode, data));
   };
   
-  export const MethodNotAllowed = (res: Response, serverError = '', errorCode = 1, data = null) => {
+  export const MethodNotAllowed = (res: Response, serverError = '', errorCode = ErrorCode.SUCCESS, data = null) => {
     res
       .status(httpStatus.METHOD_NOT_ALLOWED)
       .json(
@@ -52,7 +60,7 @@ const response = (httpStatusCode: number, errorMessage: string | null, errorCode
       );
   };
   
-  export const InternalServerError = (res: Response, serverError = '', errorCode = 1, data = null) => {
+  export const InternalServerError = (res: Response, serverError = '', errorCode = ErrorCode.SUCCESS, data = null) => {
     res
       .status(httpStatus.INTERNAL_SERVER_ERROR)
       .json(
@@ -60,7 +68,7 @@ const response = (httpStatusCode: number, errorMessage: string | null, errorCode
       );
   };
   
-  export const Conflict = (res: Response, serverError = '', errorCode = 1, data = null) => {
+  export const Conflict = (res: Response, serverError = '', errorCode = ErrorCode.SUCCESS, data = null) => {
     res
       .status(httpStatus.CONFLICT)
       .json(response(httpStatus.CONFLICT, serverError, errorCode, data));

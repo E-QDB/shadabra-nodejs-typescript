@@ -1,9 +1,9 @@
-export const PAGINATION = {
-   DEFAULT_PAGE_SIZE: 2,
-   DEFAULT_PAGE_INDEX: 1
+export enum PAGINATION {
+   DEFAULT_PAGE_SIZE = 2,
+   DEFAULT_PAGE_INDEX = 1
 };
 
-export const SORTING = {
-   DEFAULT_ORDER_BY_COLUMN: '',
-   DEFAULT_ORDER_BY_DIRECTION: 'desc'
+export enum SORTING {
+   DEFAULT_ORDER_BY_COLUMN = '',
+   DEFAULT_ORDER_BY_DIRECTION = 'desc'
 }
