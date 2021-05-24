@@ -1,4 +1,4 @@
-import express, {Express, Request, Response, NextFunction} from 'express'
+import express, {Application, Request, Response, NextFunction} from 'express'
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import {homeRouter, teacherRouter, courseRouter, studentRouter, classRouter, sessionRouter} from '../routes';
 import {error} from '../middlewares';
 
-export const routes = (app: Express) => {
+export const routes = (app: Application) => {
    app.use(cors({origin: '*', credentials: true}));
    app.use(bodyParser.urlencoded({extended: true}));
    app.use(bodyParser.json());

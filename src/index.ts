@@ -1,8 +1,8 @@
-import express, {Express} from 'express';
+import express, {Application} from 'express';
 import {EnvironmentVariables} from './config';
 import {logging, routes, database, production} from './startups';
 
-const app: Express = express();
+const app: Application = express();
 
 logging();
 database();

@@ -8,7 +8,7 @@ import {PAGINATION, SORTING} from '../constants';
 const Teacher = mongoose.model<ITeacher>('teacher', teacherSchema, 'teacher');
 const Class = mongoose.model<IClass>('class', classSchema, 'class');
 
-export const getTeacherById = async (req: Request, res: Response) => {
+export const getTeacherById = async (req: Request, res: Response) : Promise<void> => {
   try {
     let teacher = await Teacher.findById(req.params.id).populate('classes', 'id name courseId');
     return !teacher ? NotFound(res, 'Teacher Not Found') : SuccessResponse(res, teacher);
@@ -20,7 +20,7 @@ export const getTeacherById = async (req: Request, res: Response) => {
 
 export const getTeachers = async (req: Request, res: Response) => {
    try {
-      const {name = '', email = '', phone = '', classId ,pageSize, pageIndex, orderByColumn, orderByDirection = SORTING.DEFAULT_ORDER_BY_DIRECTION} = req.query;
+      const {name = '', email = '', phone = '', classId , pageSize, pageIndex, orderByColumn, orderByDirection = SORTING.DEFAULT_ORDER_BY_DIRECTION} = req.query;
       const size = +(pageSize as string);
       const index = +(pageIndex as string);
       const classIdQuery = !classId ? {} as any : { classes: { $in: [classId] } };
@@ -79,13 +79,13 @@ export const addTeacher = async (req: Request, res: Response) => {
         { $push: { teachers: result.id } },
         { new: true, useFindAndModify: false}
       );
-
       await Teacher.findByIdAndUpdate(
         result.id,
         { $push: { classes: classId } },
         { new: true, useFindAndModify: false }
       );
     });
+    
     return SuccessResponse(res, result, 201);
   } catch (error) {
     logger.error(error);
